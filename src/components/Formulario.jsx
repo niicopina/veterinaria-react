@@ -1,7 +1,9 @@
 import React from 'react'
 import {useState, useEffect } from 'react'
+import Error from './Error'
 
-const Formulario = () => {
+const Formulario = ({pacientes, setPacientes}) => {
+
   const [nombre, setNombre] = useState('')
   const [responsable, setResponsable] = useState('')
   const [email, setEmail] = useState('')
@@ -18,6 +20,18 @@ const Formulario = () => {
       return 
     }
     setError(false)
+
+    const objetoPaciente = {
+      nombre, responsable, email, fecha, sintomas
+    }
+    
+    setPacientes([...pacientes, objetoPaciente])
+    //reiniciar form
+    setNombre('')
+    setResponsable('')
+    setEmail('')
+    setFecha('')
+    setAlta('')
   }
 
 
@@ -29,11 +43,7 @@ const Formulario = () => {
         <span className='text-indigo-600 font-bold '>Administralo</span>
       </p>
       <form onSubmit={handleSubmit} className='bg-white shadow-md rounded-lg py-10 px-5 mb-10'>
-        {error && (
-              <div className='bg-red-600 text-white text-center 
-                              p-3 uppercase font-bold mb-3 rounded-md'>
-                <p>Todos los campos son obligatorios</p>
-              </div>)}
+        {error }
         <div className='mb-5'>
           <label htmlFor="criatura" className='block text-graay-700 uppercase font-bold'>
             Nombre de la Criatura: {}
