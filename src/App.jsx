@@ -4,7 +4,8 @@ import ListadoPacientes from './components/ListadoPacientes'
 import { useState } from 'react'
 
 function App() {
-  const [pacientes, setPacientes] = useState([ ])
+  const [pacientes, setPacientes] = useState([])
+  const [paciente, setPaciente] = useState({})
   return (
     <> 
       <div className='container mx-3 mt-20'>
@@ -18,7 +19,7 @@ function App() {
 
             <ListadoPacientes 
               pacientes={pacientes}
-              
+              setPaciente={setPaciente}
             />
           </div>
       </div>
