@@ -43,7 +43,9 @@ const Formulario = ({pacientes, setPacientes}) => {
         <span className='text-indigo-600 font-bold '>Administralo</span>
       </p>
       <form onSubmit={handleSubmit} className='bg-white shadow-md rounded-lg py-10 px-5 mb-10'>
-        {error }
+
+        {error && <Error><p>'Todos los campos son obligatorios'</p></Error>}
+
         <div className='mb-5'>
           <label htmlFor="criatura" className='block text-graay-700 uppercase font-bold'>
             Nombre de la Criatura: {}
