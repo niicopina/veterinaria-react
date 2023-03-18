@@ -1,5 +1,6 @@
 import React from 'react'
 import Paciente from './Paciente'
+
 Paciente
 const ListadoPacientes = ({pacientes, setPaciente}) => {
 
