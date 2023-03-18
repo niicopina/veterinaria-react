@@ -2,7 +2,7 @@ import React from 'react'
 import {useState, useEffect } from 'react'
 import Error from './Error'
 
-const Formulario = ({pacientes, setPacientes, paciente}) => {
+const Formulario = ({pacientes, setPacientes, paciente, setPaciente}) => {
 
   const [nombre, setNombre] = useState('')
   const [responsable, setResponsable] = useState('')
@@ -12,6 +12,7 @@ const Formulario = ({pacientes, setPacientes, paciente}) => {
 
   const [error, setError] = useState(false)
 
+  //Editar info de paciente ya registrado
   useEffect(() => {
     if(Object.keys(paciente).length > 0){
       setNombre(paciente.nombre)
@@ -22,12 +23,14 @@ const Formulario = ({pacientes, setPacientes, paciente}) => {
     }
   }, [paciente])
 
+  //Generar Id unico manualmente
   const generarId = () => {
     const random = Math.random().toString(36).substr(2)
     const date = Date.now().toString(36)
     return random + date
   }
 
+  //Mensaje de error con campos vacios
   const handleSubmit = (e) => {
     e.preventDefault()
     if([nombre, responsable, email, fecha, sintomas].includes('')){
@@ -37,11 +40,24 @@ const Formulario = ({pacientes, setPacientes, paciente}) => {
     }
     setError(false)
 
+    //Objeto de paciente en memoria del form
     const objetoPaciente = {
-      nombre, responsable, email, fecha, sintomas, id: generarId()
+      nombre, responsable, email, fecha, sintomas
+    }
+    if(paciente.id){
+      //Editando registro
+      objetoPaciente.id = paciente.id
+      const pacientesActualizados = pacientes.map(pacienteState => 
+        pacienteState.id === paciente.id ? objetoPaciente : pacienteState)
+        setPacientes(pacientesActualizados)
+        //Limpiamos memoria
+        setPaciente({})
+    }else{
+      //Nuevo registro
+      objetoPaciente.id = generarId()
+      setPacientes([...pacientes, objetoPaciente])
     }
     
-    setPacientes([...pacientes, objetoPaciente])
     //reiniciar form
     setNombre('')
     setResponsable('')
@@ -109,10 +125,11 @@ const Formulario = ({pacientes, setPacientes, paciente}) => {
                     value={sintomas}
                     onChange={(e)=> setSintomas(e.target.value)}></textarea>
         </div>
-        <input type="submit" 
-          className="bg-indigo-600 w-full p-3 text-white
-          uppercase font-bold hover:bg-indigo-800 cursor-pointer transition-all" 
-          value="Agregar Paciente" />
+        <input  
+              type="submit" 
+              className="bg-indigo-600 w-full p-3 text-white
+                uppercase font-bold hover:bg-indigo-800 cursor-pointer transition-all" 
+              value={ paciente.id ? 'Editar paciente' : 'Agregar paciente'} />
       </form>
 
     </div>
